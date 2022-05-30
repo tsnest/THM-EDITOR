@@ -101,6 +101,7 @@ namespace ConsoleApp1
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            need_alt_texture_type = false;
             if (need_update_values)
                 Values_Update();
             thm.OnTypeChange();

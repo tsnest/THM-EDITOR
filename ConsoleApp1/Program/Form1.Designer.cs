@@ -183,7 +183,6 @@ namespace ConsoleApp1
             this.label5.Size = new System.Drawing.Size(63, 13);
             this.label5.TabIndex = 9;
             this.label5.Text = "Bump name";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label6
             // 
@@ -214,7 +213,6 @@ namespace ConsoleApp1
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(345, 20);
             this.textBox3.TabIndex = 13;
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // label7
             // 
@@ -233,7 +231,6 @@ namespace ConsoleApp1
             this.label8.Size = new System.Drawing.Size(57, 13);
             this.label8.TabIndex = 15;
             this.label8.Text = "Fade color";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // label9
             // 

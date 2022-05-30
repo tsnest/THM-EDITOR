@@ -99,16 +99,6 @@ namespace ConsoleApp1
             thm.soc_cop_repair();
         }
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-        }
-        private void label5_Click(object sender, EventArgs e)
-        {
-        }
-        private void label8_Click(object sender, EventArgs e)
-        {
-        }
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (need_update_values)

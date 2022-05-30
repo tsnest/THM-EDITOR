@@ -75,12 +75,35 @@ namespace ConsoleApp1
 
             flForceU32 = -1
         };
+        public enum EMIPFilters
+        {
+            kMIPFilterAdvanced = 5,
+
+            kMIPFilterPoint = 2,
+            kMIPFilterBox = 0,
+            kMIPFilterTriangle = 3,
+            kMIPFilterQuadratic = 4,
+            kMIPFilterCubic = 1,
+
+            kMIPFilterCatrom = 6,
+            kMIPFilterMitchell = 7,
+
+            kMIPFilterGaussian = 8,
+            kMIPFilterSinc = 9,
+            kMIPFilterBessel = 10,
+
+            kMIPFilterHanning = 11,
+            kMIPFilterHamming = 12,
+            kMIPFilterBlackman = 13,
+            kMIPFilterKaiser = 14,
+        };
         public ETFormat fmt = ETFormat.tfForceU32;
         public ETType type = ETType.ttForceU32;
         public ETMaterial material = ETMaterial.tmForceU32;
         public ETBumpMode bump_mode = ETBumpMode.tbmForceU32;
+        public EMIPFilters mip_filter;
 
-        public uint border_color = 0, fade_color = 0, fade_amount = 0, mip_filter = 0, width = 0, height = 0;
+        public uint border_color = 0, fade_color = 0, fade_amount = 0, width = 0, height = 0;
         public string detail_name = "", bump_name = "", ext_normal_map_name = "";
         public float material_weight = 0, bump_virtual_height = 0;
         public Flags32 m_flags = new Flags32();
@@ -123,17 +146,49 @@ namespace ConsoleApp1
             form.Form_Update();
         }
 
+        public void OnTypeChange()
+        {
+            switch (type)
+            {
+                case ETType.ttImage:
+                case ETType.ttCubeMap:
+                    break;
+                case ETType.ttBumpMap:
+                    m_flags.Set((uint)ETextureFlags.flGenerateMipMaps, false);
+                    break;
+                case ETType.ttNormalMap:
+                    m_flags.Set((uint)(ETextureFlags.flImplicitLighted | ETextureFlags.flBinaryAlpha | 
+                        ETextureFlags.flAlphaBorder | ETextureFlags.flColorBorder | ETextureFlags.flFadeToColor |
+                        ETextureFlags.flFadeToAlpha | ETextureFlags.flDitherColor | ETextureFlags.flDitherEachMIPLevel |
+                        ETextureFlags.flBumpDetail), false);
+                    m_flags.Set((uint)ETextureFlags.flGenerateMipMaps, true);
+                    mip_filter = EMIPFilters.kMIPFilterKaiser;
+                    fmt = ETFormat.tfRGBA;
+                    break;
+                case ETType.ttTerrain:
+                    m_flags.Set((uint)(ETextureFlags.flGenerateMipMaps | ETextureFlags.flBinaryAlpha |
+                        ETextureFlags.flAlphaBorder | ETextureFlags.flColorBorder | ETextureFlags.flFadeToColor |
+                        ETextureFlags.flFadeToAlpha | ETextureFlags.flDitherColor | ETextureFlags.flDitherEachMIPLevel |
+                        ETextureFlags.flBumpDetail), false);
+                    m_flags.Set((uint)ETextureFlags.flImplicitLighted, true);
+                    fmt = ETFormat.tfDXT1;
+                    break;
+            }
+            form.Form_Update();
+        }
+
         public void Load(string filename)
         {
             using (IReader reader = new IReader(new BinaryReader(File.Open(filename, FileMode.Open))))
             {
+                form.need_update_values = false;
                 R_ASSERT(reader.find_chunk(THM_CHUNK_TEXTUREPARAM) != 0, "Can't open chunk: THM_CHUNK_TEXTUREPARAM");
                 fmt = (ETFormat)reader.r_u32();
                 m_flags.Set(reader.r_u32(), true);
                 border_color = reader.r_u32();
                 fade_color = reader.r_u32();
                 fade_amount = reader.r_u32();
-                mip_filter = reader.r_u32();
+                mip_filter = (EMIPFilters)reader.r_u32();
                 width = reader.r_u32();
                 height = reader.r_u32();
 
@@ -178,6 +233,7 @@ namespace ConsoleApp1
                 }
             }
             form.Form_Update();
+            form.need_update_values = true;
         }
         public void Save(string filename)
         {
@@ -198,7 +254,7 @@ namespace ConsoleApp1
                 writer.w_u32(border_color);
                 writer.w_u32(fade_color);
                 writer.w_u32(fade_amount);
-                writer.w_u32(mip_filter);
+                writer.w_u32((uint)mip_filter);
                 writer.w_u32(width);
                 writer.w_u32(height);
                 writer.close_chunk();

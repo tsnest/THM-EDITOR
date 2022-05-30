@@ -8,6 +8,7 @@ namespace ConsoleApp1
         private THM thm;
         private int alt_texture_type = 0;
         private bool need_alt_texture_type = false;
+        public bool need_update_values = false;
 
         public Form1()
         {
@@ -33,11 +34,11 @@ namespace ConsoleApp1
             }
             comboBox2.SelectedIndex = (int)thm.fmt;
             comboBox3.SelectedIndex = (int)thm.bump_mode;
+            comboBox4.SelectedIndex = (int)thm.mip_filter;
 
             textBox4.Text = thm.border_color.ToString();
             textBox6.Text = thm.fade_color.ToString();
             textBox5.Text = thm.fade_amount.ToString();
-            textBox7.Text = thm.mip_filter.ToString();
             textBox8.Text = thm.width.ToString();
             textBox9.Text = thm.height.ToString();
             textBox10.Text = thm.fade_delay.ToString();
@@ -52,11 +53,11 @@ namespace ConsoleApp1
             thm.type = need_alt_texture_type ? (THM.ETType)alt_texture_type : (THM.ETType)comboBox1.SelectedIndex;
             thm.fmt = (THM.ETFormat)comboBox2.SelectedIndex;
             thm.bump_mode = (THM.ETBumpMode)comboBox3.SelectedIndex;
+            thm.mip_filter = (THM.EMIPFilters)comboBox4.SelectedIndex;
 
             thm.border_color = Convert.ToUInt32(textBox4.Text);
             thm.fade_color = Convert.ToUInt32(textBox6.Text);
             thm.fade_amount = Convert.ToUInt32(textBox5.Text);
-            thm.mip_filter = Convert.ToUInt32(textBox7.Text);
             thm.width = Convert.ToUInt32(textBox8.Text);
             thm.height = Convert.ToUInt32(textBox9.Text);
             thm.fade_delay = Convert.ToByte(textBox10.Text);
@@ -106,6 +107,13 @@ namespace ConsoleApp1
         }
         private void label8_Click(object sender, EventArgs e)
         {
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (need_update_values)
+                Values_Update();
+            thm.OnTypeChange();
         }
     }
 }

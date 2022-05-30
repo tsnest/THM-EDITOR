@@ -1,5 +1,4 @@
 using System.IO;
-using System.Windows.Forms;
 
 namespace ConsoleApp1
 {
@@ -101,7 +100,7 @@ namespace ConsoleApp1
         public ETType type = ETType.ttForceU32;
         public ETMaterial material = ETMaterial.tmForceU32;
         public ETBumpMode bump_mode = ETBumpMode.tbmForceU32;
-        public EMIPFilters mip_filter;
+        public EMIPFilters mip_filter = EMIPFilters.kMIPFilterBox;
 
         public uint border_color = 0, fade_color = 0, fade_amount = 0, width = 0, height = 0;
         public string detail_name = "", bump_name = "", ext_normal_map_name = "";
@@ -120,13 +119,30 @@ namespace ConsoleApp1
         int THM_CHUNK_EXT_NORMALMAP = 0x0818;
         int THM_CHUNK_FADE_DELAY = 0x0819;
         int THM_CHUNK_THM_EDITOR_FLAG = 0x0820;
-        static int THUMB_WIDTH = 128;
-        static int THUMB_HEIGHT = 128;
-        int THUMB_SIZE = THUMB_HEIGHT * THUMB_WIDTH;
 
         private Form1 form;
 
         public THM(Form1 form1) { form = form1; }
+
+        public void ResetValues()
+        {
+            repaired = false;
+
+            border_color = 0;
+            fade_color = 0;
+            fade_amount = 0;
+            width = 0;
+            height = 0;
+            material_weight = 0;
+            bump_virtual_height = 0;
+            fade_delay = 0;
+
+            detail_name = "";
+            bump_name = "";
+            ext_normal_map_name = "";
+
+            m_flags = new Flags32();
+        }
 
         // В ТЧ и ЗП tp.fmt и tp.type перепутаны. СДК 0.4 и 0.7 их сохраняют всегда правильно (Как в зп).
         // Для тч использование в рендере tp.fmt вместо tp.type, вероятнее всего, является опечаткой, и как следствие,
@@ -179,6 +195,7 @@ namespace ConsoleApp1
 
         public void Load(string filename)
         {
+            ResetValues();
             using (IReader reader = new IReader(new BinaryReader(File.Open(filename, FileMode.Open))))
             {
                 form.need_update_values = false;

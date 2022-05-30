@@ -7,7 +7,7 @@
     <ProjectGuid>{A1228883-1254-4A64-A83C-2F98C1603AD1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ConsoleApp1</RootNamespace>
-    <AssemblyName>ConsoleApp1</AssemblyName>
+    <AssemblyName>THM Editor</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

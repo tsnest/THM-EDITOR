@@ -4,16 +4,24 @@ namespace ConsoleApp1
     public class Flags32
     {
         private uint current_flags = 0;
-        public void Set(uint flags, bool set)
+        public void Add(uint flags, bool set)
         {
             if (set)
                 current_flags |= flags;
             else
                 current_flags &= ~flags;
         }
+        public void Set(uint flags)
+        {
+            current_flags = flags;
+        }
         public uint Get()
         {
             return current_flags;
+        }
+        public bool Test(uint flag)
+        {
+            return (current_flags & flag) != 0;
         }
 
         public Flags32() { }

@@ -1,11 +1,14 @@
 using System;
 using System.Windows.Forms;
+using DDSReader;
+using Pfim;
 
 namespace ConsoleApp1
 {
     public partial class Form1 : Form
     {
         private THM thm;
+        private DDSImage dds_img;
         private int alt_texture_type = 0;
         private bool need_alt_texture_type = false;
         public bool need_update_values = false;
@@ -18,6 +21,7 @@ namespace ConsoleApp1
         private void Form1_Load(object sender, EventArgs e)
         {
             thm = new THM(this);
+            Form_Update();
         }
 
         public void Form_Update()
@@ -98,6 +102,11 @@ namespace ConsoleApp1
         {
             thm.soc_cop_repair();
         }
+        private void button5_Click(object sender, EventArgs e)
+        {
+            FlagsMenu flagsmenu = new FlagsMenu(thm);
+            flagsmenu.ShowDialog();
+        }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -105,6 +114,32 @@ namespace ConsoleApp1
             if (need_update_values)
                 Values_Update();
             thm.OnTypeChange();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+            dds_img = new DDSImage(openFileDialog1.FileName);
+
+            thm.width = (uint)dds_img._image.Width;
+            thm.height = (uint)dds_img._image.Height;
+
+            switch (((Dds)dds_img._image).Header.PixelFormat.FourCC)
+            {
+                case CompressionAlgorithm.D3DFMT_DXT1:
+                    thm.fmt = THM.ETFormat.tfDXT1;
+                    break;
+                case CompressionAlgorithm.D3DFMT_DXT3:
+                    thm.fmt = THM.ETFormat.tfDXT3;
+                    break;
+                case CompressionAlgorithm.D3DFMT_DXT5:
+                    thm.fmt = THM.ETFormat.tfDXT5;
+                    break;
+            }
+            if(((Dds)dds_img._image).Header.MipMapCount > 0)
+                thm.m_flags.Add((uint)THM.ETextureFlags.flGenerateMipMaps, true);
+
+            Form_Update();
         }
     }
 }

@@ -106,7 +106,7 @@ namespace ConsoleApp1
         public string detail_name = "", bump_name = "", ext_normal_map_name = "";
         public float material_weight = 0, bump_virtual_height = 0;
         public Flags32 m_flags = new Flags32();
-        public System.Byte fade_delay = 0;
+        public byte fade_delay = 0;
         public bool repaired = false;
 
         int THM_CHUNK_VERSION = 0x0810;
@@ -170,23 +170,23 @@ namespace ConsoleApp1
                 case ETType.ttCubeMap:
                     break;
                 case ETType.ttBumpMap:
-                    m_flags.Set((uint)ETextureFlags.flGenerateMipMaps, false);
+                    m_flags.Add((uint)ETextureFlags.flGenerateMipMaps, false);
                     break;
                 case ETType.ttNormalMap:
-                    m_flags.Set((uint)(ETextureFlags.flImplicitLighted | ETextureFlags.flBinaryAlpha | 
+                    m_flags.Add((uint)(ETextureFlags.flImplicitLighted | ETextureFlags.flBinaryAlpha | 
                         ETextureFlags.flAlphaBorder | ETextureFlags.flColorBorder | ETextureFlags.flFadeToColor |
                         ETextureFlags.flFadeToAlpha | ETextureFlags.flDitherColor | ETextureFlags.flDitherEachMIPLevel |
                         ETextureFlags.flBumpDetail), false);
-                    m_flags.Set((uint)ETextureFlags.flGenerateMipMaps, true);
+                    m_flags.Add((uint)ETextureFlags.flGenerateMipMaps, true);
                     mip_filter = EMIPFilters.kMIPFilterKaiser;
                     fmt = ETFormat.tfRGBA;
                     break;
                 case ETType.ttTerrain:
-                    m_flags.Set((uint)(ETextureFlags.flGenerateMipMaps | ETextureFlags.flBinaryAlpha |
+                    m_flags.Add((uint)(ETextureFlags.flGenerateMipMaps | ETextureFlags.flBinaryAlpha |
                         ETextureFlags.flAlphaBorder | ETextureFlags.flColorBorder | ETextureFlags.flFadeToColor |
                         ETextureFlags.flFadeToAlpha | ETextureFlags.flDitherColor | ETextureFlags.flDitherEachMIPLevel |
                         ETextureFlags.flBumpDetail), false);
-                    m_flags.Set((uint)ETextureFlags.flImplicitLighted, true);
+                    m_flags.Add((uint)ETextureFlags.flImplicitLighted, true);
                     fmt = ETFormat.tfDXT1;
                     break;
             }
@@ -201,7 +201,7 @@ namespace ConsoleApp1
                 form.need_update_values = false;
                 R_ASSERT(reader.find_chunk(THM_CHUNK_TEXTUREPARAM) != 0, "Can't open chunk: THM_CHUNK_TEXTUREPARAM");
                 fmt = (ETFormat)reader.r_u32();
-                m_flags.Set(reader.r_u32(), true);
+                m_flags.Set(reader.r_u32());
                 border_color = reader.r_u32();
                 fade_color = reader.r_u32();
                 fade_amount = reader.r_u32();

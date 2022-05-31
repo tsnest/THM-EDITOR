@@ -49,12 +49,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Pfim" Version="0.10.3" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Program\Base.cs" />
+    <Compile Include="Program\DDSImage.cs" />
     <Compile Include="Program\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program\FlagsMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program\FlagsMenu.Designer.cs">
+      <DependentUpon>FlagsMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Program\FS.cs" />
     <Compile Include="Program\Program.cs" />
@@ -65,6 +75,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Program\FlagsMenu.resx">
+      <DependentUpon>FlagsMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Program\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

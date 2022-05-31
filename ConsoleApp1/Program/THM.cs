@@ -149,6 +149,7 @@ namespace ConsoleApp1
         // неправильная загрузка THM файла. Вот такие вот приколы от ГСК.
         public void soc_cop_repair()
         {
+            form.need_update_values = false;
             form.Values_Update();
 
             ETFormat fmt_old = fmt;
@@ -160,6 +161,7 @@ namespace ConsoleApp1
             repaired = !repaired;
 
             form.Form_Update();
+            form.need_update_values = true;
         }
 
         public void OnTypeChange()

@@ -11,7 +11,7 @@ namespace ConsoleApp1
         private DDSImage dds_img;
         private int alt_texture_type = 0;
         private bool need_alt_texture_type = false;
-        public bool need_update_values = false;
+        public bool need_update_values = true;
 
         public Form1()
         {
